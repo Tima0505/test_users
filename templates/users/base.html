@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>{% block title %}Users{% endblock %}</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f3f5f8; margin: 0; }
+  .card { max-width: 440px; margin: 40px auto; background: #fff; padding: 24px 28px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  h1 { font-size: 22px; margin-top: 0; }
+  p { margin: 10px 0; }
+  label { display: block; font-size: 14px; margin-bottom: 4px; color: #333; }
+  input, select { width: 100%; padding: 7px; box-sizing: border-box; }
+  input[type=file] { padding: 0; }
+  .captcha { width: auto; vertical-align: middle; border: 1px solid #ccc; border-radius: 4px; }
+  #id_captcha_1 { width: 140px; margin-left: 8px; }
+  button { margin-top: 12px; width: 100%; padding: 10px; background: #2f6fb3; color: #fff; border: 0; border-radius: 6px; font-size: 15px; cursor: pointer; }
+  .errorlist { color: #b3261e; padding-left: 18px; margin: 4px 0; font-size: 14px; }
+  .helptext { display: none; }
+  a { color: #2f6fb3; }
+  img.avatar { border-radius: 50%; object-fit: cover; }
+</style>
+</head>
+<body><div class="card">{% block content %}{% endblock %}</div></body>
+</html>

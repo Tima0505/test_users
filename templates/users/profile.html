@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% block title %}Личный кабинет{% endblock %}
+{% block content %}
+<h1>Приветствую, {{ profile.username }}</h1>
+{% if profile.photo %}<img class="avatar" src="{{ profile.photo.url }}" alt="Фото" width="120" height="120">{% endif %}
+<p>Имя: {% if profile.first_name %}{{ profile.first_name }}{% else %}не указано{% endif %}</p>
+<p>Почта: {{ profile.email }}</p>
+<p>Пол: {{ profile.gender }}</p>
+<p>Город: {{ profile.city }}</p>
+<p>Телефон: {{ profile.phone_number }}</p>
+<p>Дата рождения: {{ profile.date_bir|date:"d.m.Y" }}</p>
+<form action="{% url 'lgout' %}" method="POST">
+  {% csrf_token %}
+  <button type="submit">Выйти</button>
+</form>
+{% endblock %}
