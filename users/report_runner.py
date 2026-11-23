@@ -66,6 +66,18 @@ def _shade(cell, color):
     tcPr.append(shd)
 
 
+def _fix_widths(table, widths):
+    """Фиксированная ширина колонок: её понимают и Word, и Google Документы."""
+    table.autofit = False
+    tblPr = table._tbl.tblPr
+    layout = OxmlElement('w:tblLayout'); layout.set(qn('w:type'), 'fixed'); tblPr.append(layout)
+    for col, w in zip(table._tbl.tblGrid.findall(qn('w:gridCol')), widths):
+        col.set(qn('w:w'), str(int(w / 635)))  # EMU -> twips
+    for row in table.rows:
+        for i, w in enumerate(widths):
+            row.cells[i].width = w
+
+
 def write_report(records, path, duration):
     doc = Document()
     normal = doc.styles['Normal']
@@ -109,6 +121,7 @@ def write_report(records, path, duration):
         cells = summary.add_row().cells
         for i, v in enumerate([g, len(rows), ok, len(rows) - ok]):
             cells[i].text = str(v)
+    _fix_widths(summary, [Cm(5.0), Cm(3.0), Cm(3.0), Cm(3.0)])
 
     # Подробная таблица
     doc.add_paragraph()
@@ -128,9 +141,7 @@ def write_report(records, path, duration):
                     rn.font.size = Pt(9)
         status_run = cells[4].paragraphs[0].runs[0]
         status_run.bold = True; status_run.font.color.rgb = COLORS[r['status']]
-    for row in table.rows:
-        for i, w in enumerate(widths):
-            row.cells[i].width = w
+    _fix_widths(table, widths)
 
     problems = [r for r in records if r['status'] in ('FAILED', 'ERROR')]
     if problems:
